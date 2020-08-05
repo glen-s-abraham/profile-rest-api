@@ -1,7 +1,9 @@
 from rest_framework.views import APIView
+from rest_framework import viewsets
 from rest_framework.response import Response
 from rest_framework import status
 from profiles_api import serializers
+
 
 class HelloWorld(APIView):
 	"""Simple api view"""
@@ -42,3 +44,42 @@ class HelloWorld(APIView):
 	def delete(self,request,pk=None):
 		"""Completely removes an item"""
 		return Response({'message':'DELETE'})				
+
+
+class HelloViewset(viewsets.ViewSet):
+	"""View set class """
+
+	serializer_class=serializers.HelloSerializer
+
+	def list(self,request):
+		"""Function for listing items"""
+		return Response({'message':'Hello!!'})
+
+	def retrieve(self,request,pk=None):
+		"""Function for listing items"""
+		return Response({'message':'GET'})	
+
+	def create(self,request):
+		serializer=self.serializer_class(data=request.data)
+		if serializer.is_valid():
+			name=serializer.validated_data.get('name')
+			message=f'hello {name}'
+			return Response({'message':message})
+		else:
+			return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)	
+
+	def update(self,request,pk=None):
+		"""Function for listing items"""
+		return Response({'message':'PUT'})
+
+	def partial_update(self,request,pk=None):
+		"""Function for listing items"""
+		return Response({'message':'PATCH'})	
+	
+	def destroy(self,request,pk=None):
+		"""Function for listing items"""
+		return Response({'message':'DELETE'})	
+
+
+
+	
