@@ -31,3 +31,12 @@ class UserProfilesSerializer(serializers.ModelSerializer):
 			password=validated_data['password']	
 			)	
 		return user
+
+
+class UserProfilesFeedSerializer(serializers.ModelSerializer):
+	"""Serializer for managing profile feed"""
+	class Meta:
+		model=models.UserProfilesFeed
+		fields=('id','user_profile','feed_text','created_on')
+		extra_kwargs={'user_profile':{'read_only':True}}
+		
